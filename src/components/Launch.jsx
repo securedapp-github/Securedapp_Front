@@ -12,7 +12,7 @@ const Launch = () => {
       }}
     >
       <div className="flex lg:flex-row md:flex-row  md:pt-[100px] md:px-[80px] p-[30px] pb-0 flex-col-reverse">
-        <div className="px-3 pt-7 flex-shrink h-fit">
+        <div style={{marginTop: "75px"}} className="px-3 pt-7 flex-shrink h-fit">
           <Heading content="Unlocking the DeFi    Potential with SecurePAD" />
           <div className="mt-[10px]">
             <Subheading content="Discover the Power of Tokenomics with SecurePAD. Experience Exclusive Early Access to the Next Unicorn in DeFi Tokenization. Trustworthy Audited and Vetted Web3 Projects." />
@@ -25,7 +25,7 @@ const Launch = () => {
             Exciting Upcoming Project
           </button>
         </div>
-        <div className="md:mb-[100px] mt-[40px] -mt-[10px]">
+        <div className="md:mb-[100px] mt-[70px] -mt-[10px]">
           <img
             src={hero}
             className="md:w-[1400px] md:h-[360px] w-auto h-auto"
