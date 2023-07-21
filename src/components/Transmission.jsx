@@ -8,10 +8,10 @@ const Transmission = () => {
       </div>
       <div className="py-8">
         <button className="email-button rounded-full bg-gray-500 text-white  flex items-center justify-between md:w-[500px] w-[300px]  py-7 px-9 ">
-          <span class="email-text font-light font-sans text-2xl leading-[110%]">
+          <span className="email-text font-light font-sans text-2xl leading-[110%]">
             Your email
           </span>
-          <span class="arrow font-light font-sans text-2xl leading-[110%]">
+          <span className="arrow font-light font-sans text-2xl leading-[110%]">
             &gt;
           </span>
         </button>
