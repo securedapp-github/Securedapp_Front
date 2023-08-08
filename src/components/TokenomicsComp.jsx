@@ -58,8 +58,10 @@ const TokenomicsComp = () => {
         </div>
       </div>
 
-      <div className="tokenthird"></div>
-      <div className="bg-[#12D576] lg:-mt-0 -mt-[20px]">
+      <div className="tokenstepsbg">
+        <div className="tokenthird "></div>
+      </div>
+      <div className="bg-[#12D576] lg:-mt-0 -mt-[20px] lg:pt-0">
         <div className="text-black">
           <div className="lg:px-[80px] px-[20px] lg:pt-[30px] pt-5 lg:pb-[10px]">
             <h1 className=" font-sans text-opacity-80 text-[20px] font-bold leading-[100%]">

@@ -470,6 +470,24 @@
   /* Optionally, you can set the background attachment to fixed for a fixed background */
   /* background-attachment: fixed; */
 }
+.tokenstepsbg {
+  /* Set the background image URL here */
+
+  background-image: url("./images/tokenstepsbg.png");
+
+  /* Full height and width of the viewport */
+  width: auto;
+  height: max-content;
+
+  /* Background image should cover the entire element */
+  background-size: cover;
+
+  /* Center the background image */
+  background-position: initial;
+
+  /* Optionally, you can set the background attachment to fixed for a fixed background */
+  /* background-attachment: fixed; */
+}
 .blogimg {
   /* Set the background image URL here */
 
@@ -491,7 +509,7 @@
 .tokenthird {
   /* Set the background image URL here */
 
-  background-image: url("./images/tokenthirdpic.png");
+  background-image: url("./images/tokensteps.png");
 
   /* Full height and width of the viewport */
   width: auto;
@@ -502,6 +520,7 @@
 
   /* Center the background image */
   background-position: initial;
+  background-repeat: no-repeat;
 
   /* Optionally, you can set the background attachment to fixed for a fixed background */
   /* background-attachment: fixed; */
@@ -511,7 +530,7 @@
 @media (max-width: 640px) {
   .tokenthird {
     /* Set the background image URL here */
-    background-image: url("./images/tokenthirdpic.png");
+    background-image: url("./images/tokensteps.png");
 
     /* Adjust the height as needed */
     height: 180px;
@@ -532,7 +551,7 @@
 @media (min-width: 641px) {
   .tokenthird {
     /* Set the background image URL here */
-    background-image: url("./images/tokenthirdpic.png");
+    background-image: url("./images/tokensteps.png");
 
     /* Full height and width of the viewport */
     width: auto;

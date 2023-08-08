@@ -53,12 +53,14 @@ const AuditModal = ({ onClose }) => {
       />
       <div className="fixed top-0 left-0 right-0 bottom-0 flex justify-center items-center    bg-gray-900 bg-opacity-80 z-[10000142323]">
         <div className="w-[600px] p-6 rounded-lg bg-white shadow-lg">
-          <button
-            onClick={onClose}
-            className="absolute top-[60px] bg-red-800 right-[470px] border rounded px-4 py-2  hover:bg-white  text-white hover:text-gray-700"
-          >
-            Close
-          </button>
+          <div className="flex justify-end">
+            <button
+              onClick={onClose}
+              className="  bg-white right-[470px] border rounded px-4 py-2    hover:bg-red-400 text-black hover:text-white"
+            >
+              Close
+            </button>
+          </div>
           <div className="flex justify-center items-center py-[10px] ">
             <h1 className="text-black text-3xl font-bold">
               Tell us about your projects
