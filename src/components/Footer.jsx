@@ -5,6 +5,8 @@ import fb from "../images/fb.png";
 import insta from "../images/insta.png";
 import tele from "../images/tele.png";
 import twitter from "../images/twitter.png";
+import discord from "../images/Discord.png";
+import linkedin from "../images/Linkein.png";
 const Footer = () => {
   const style = {
     background:
@@ -284,7 +286,7 @@ const Footer = () => {
               target="_blank"
               className="text-gray-300 hover:text-blue-600 transition-colors duration-200"
             >
-              <img src={fb} alt="fb" className="" />
+              <img src={discord} alt="discord" className="bg-" />
             </a>
             <a
               href="https://twitter.com/secure_dapp"
@@ -298,7 +300,7 @@ const Footer = () => {
               target="_blank"
               className="text-gray-300 hover:text-blue-600 transition-colors duration-200"
             >
-              <img src={insta} alt="insta" className="" />{" "}
+              <img src={linkedin} alt="linkedin" className="" />{" "}
             </a>
             <a
               href="https://telegram.me/securedappcommunity"
