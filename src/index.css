@@ -579,18 +579,19 @@
     width: 100%;
     background-size: contain;
     background-position: initial;
+    background-repeat: no-repeat;
   }
 }
 
 /* For medium to large screens */
-@media (min-width: 641px) {
+@media (min-width: 641px) and (max-width: 1000px) {
   .DappExp {
     /* Set the background image URL here */
     background-image: url("./images/DAppExp.png");
 
     /* Full height and width of the viewport */
     width: auto;
-    height: 900px;
+    height: 520px;
 
     /* Background image should cover the entire element */
     background-size: contain;
