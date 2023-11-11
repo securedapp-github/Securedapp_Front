@@ -1,8 +1,9 @@
 import React from "react";
+import blogs from "./Constants/Blogs";
 
-const BlogCard = ({ topic, date, title, link }) => {
+const BlogCard = ({ id, topic, date, title, link }) => {
   return (
-    <a href={link} className="lg:mx-0 mx-3 md:mx-auto">
+    <a href={`blog/${id}`} className="lg:mx-0 mx-3 md:mx-auto">
       <div className="blogimg flex flex-col justify-between lg:px-0 px-7 rounded-3xl ">
         <div className="w-[200px] h-[25px] bg-black bg-opacity-90 mt-[14px] lg:mx-[14px]   flex justify-center items-center rounded-[36px]">
           <span className="text-white font-sans text-[15px] font-normal leading-normal">
@@ -29,59 +30,7 @@ const BlogCard = ({ topic, date, title, link }) => {
 };
 
 const BlogHero = () => {
-  const blogs = [
-    {
-      id: 1,
-      topic: "NFT, TOKEN, TOKEN SALES",
-      date: "June 30, 2023",
-      title: "Blits Estates: The Future of Real Estate Investing",
-      link: "#",
-    },
-    {
-      id: 2,
-      topic: "NFT, TOKEN, TOKEN SALES",
-      date: "June 16, 2023",
-      title: "How Does Fractional Investment Work? And What Are Its Benefits?",
-      link: "#",
-    },
-    {
-      id: 3,
-      topic: "NFT, TOKEN, TOKEN SALES",
-      date: "June 8, 2023",
-      title:
-        "How To Design Tokenomics For Your Cryptocurrency: The Basics Of Creating Your Token",
-      link: "#",
-    },
-    {
-      id: 4,
-      topic: "NFT, TOKEN, TOKEN SALES",
-      date: "May 31, 2023",
-      title: "SAFT: Revolutionizing Token Sales with a Secure Investment Model",
-      link: "#",
-    },
-    {
-      id: 5,
-      topic: "NFT, TOKEN, TOKEN SALES",
-      date: "May 21, 2023",
-      title: "Token Launchpads: A Guide for Investors",
-      link: "#",
-    },
-    {
-      id: 6,
-      topic: "NFT, TOKEN, TOKEN SALES",
-      date: "May 12, 2023",
-      title: "Token Offerings 101: An Overview of ICOs, STOs, IDOs, and More",
-      link: "#",
-    },
-    {
-      id: 7,
-      topic: "NFT, TOKEN, TOKEN SALES",
-      date: "May 3, 2023",
-      title: "The Future of DApps: Trends to Watch in 2023 and Beyond",
-      link: "#",
-    },
-    // Add more blog data objects
-  ];
+ 
   return (
     <div className="md:pt-[80px] pt-[130px]  bloghero ">
       <div className="md:pt-[50px] lg:mx-[80px] border-b-2 border-gray-500">
@@ -104,6 +53,7 @@ const BlogHero = () => {
           {blogs.map((blog) => (
             <BlogCard
               key={blog.id}
+              id={blog.id}
               topic={blog.topic}
               date={blog.date}
               title={blog.title}

@@ -69,7 +69,6 @@ const Footer = () => {
             </h3>
 
             <div className="flex flex-col items-start mt-4 space-y-4">
-              
               <a
                 href="#"
                 className="text-[#5F5F5F] transition-colors duration-200 dark:text-gray-200 dark:hover:text-blue-400 hover:underline hover:text-blue-600"
@@ -83,7 +82,7 @@ const Footer = () => {
               >
                 Our Services
               </a>
-            
+
               <a
                 href="https://securedapp.gitbook.io/securedapp-launchpad/workplace-policy"
                 target="_blank"
@@ -105,7 +104,7 @@ const Footer = () => {
               >
                 Shipping & Delivery Policy
               </a>
-              
+
               <a
                 href="https://securedapp.gitbook.io/securedapp-launchpad/cancellation-and-refund-policy"
                 target="_blank"
@@ -156,7 +155,7 @@ const Footer = () => {
               >
                 Wallet
               </a>
-            {/*   <a
+              {/*   <a
                 href="https://securedapp.gitbook.io/securedapp-launchpad"
                 target="_blank"
                 className="text-[#5F5F5F] transition-colors duration-200 dark:text-gray-200 dark:hover:text-blue-400 hover:underline hover:text-blue-600"
@@ -263,7 +262,7 @@ const Footer = () => {
                 Interchain security
               </a>
               <a
-                href="https://securedapp.in/blog/"
+                href="/blog"
                 className="text-[#5F5F5F] transition-colors duration-200 dark:text-gray-200 dark:hover:text-blue-400 hover:underline hover:text-blue-600"
               >
                 Blog
@@ -343,8 +342,9 @@ const Footer = () => {
             </a>
           </div>
         </div>
-        <div className=" flex flex-col items-center justify-between  sm:flex-row  text-[#5F5F5F] px-[20px]">Powered By VettedCode Technologies India Pvt. Ltd.</div>
-
+        <div className=" flex flex-col items-center justify-between  sm:flex-row  text-[#5F5F5F] px-[20px]">
+          Powered By VettedCode Technologies India Pvt. Ltd.
+        </div>
       </div>
     </footer>
   );
