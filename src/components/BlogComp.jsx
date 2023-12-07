@@ -1,28 +1,22 @@
-import React, { useState } from "react";
+import React from 'react';
+import { Switch } from '@headlessui/react';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
+import BlogList from './BlogList';
+import BlogDetail from './BlogListDetail';
+import styles from'./styles/BlogContainer.module.css';
 
-import NavbarWithBread from "./NavWithBread";
-import BlogHero from "./BlogHero";
-import Transmission from "./Transmission";
-import Footer from "./Footer";
-import {Helmet} from "react-helmet";
 
 const BlogComp = () => {
-  const [selectedMenuItem, setSelectedMenuItem] = useState(1);
-
-  const handleMenuItemClick = (index) => {
-    setSelectedMenuItem(index);
-  };
   return (
-    <>
-     <Helmet>
-            <title>SecureDApp Blog: Expert Insights on NFTs, Token Sales & DeFi Trends</title>
-            <meta name="description" content="Dive into SecureDApp's blog for insightful articles on NFTs, token sales, and the future of DeFi. Stay updated with the latest trends, guides, and expert opinions on blockchain, tokenomics, and more." />
-        </Helmet>
-      <NavbarWithBread onItemClick={handleMenuItemClick} />
-      <BlogHero />
-      <Transmission />
-      <Footer />
-    </>
+    <Router>
+      <div className="styles.blogContainer">
+        <h1>Blog Container</h1>
+        <Switch>
+          <Route path="/" exact component={BlogList} />
+          <Route path="/blog/:id" component={BlogDetail} />
+        </Switch>
+      </div>
+    </Router>
   );
 };
 
