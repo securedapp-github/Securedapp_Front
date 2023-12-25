@@ -13,6 +13,8 @@ import DappDevComp from "./components/DappDevComp";
 import SecurePadTokenComp from "./components/SecurePadTokenComp";
 import BlogComp from "./components/BlogComp";
 import TokenomicsComp from "./components/TokenomicsComp";
+
+import BlogDetails from "components/BlogListDetail";
 // import ReactGA from 'react-ga';
 // const TRACKING_ID = "G-GXZX7PXY8D"; 
 // ReactGA.initialize(TRACKING_ID);
@@ -49,6 +51,7 @@ function App() {
       <Route exact path="/token-launchpad-Securepad" element={<SecurePadTokenComp />} />
       <Route exact path="/tokenomics-design" element={<TokenomicsComp />} />
       <Route exact path="/blog" element={<BlogComp />} />
+      <Route exact path="/blog/:id" element={<BlogDetails/>} />
       </Routes>
   );
 }
