@@ -10,12 +10,12 @@ import Modal from "react-modal";
 import QRCode from 'qrcode.react';
 import logo from "../images/logo2.jpeg";
 import CryptoJS from 'crypto-js';
+
 const { v4: uuidv4 } = require('uuid');
 
 
 const FlatContractForm = () => {
   const [showverify, setshowverify] = useState(false); // for otp verify screen options
-  const [modalOpen, setModalOpen] = useState(false);
   const [enterotp, setenterotp] = useState(0);
   const [loading, setLoading] = useState(false);
   const [showFileUpload, setshowFileUpload] = useState(false);
@@ -60,6 +60,8 @@ const FlatContractForm = () => {
   const [paymentid, setpaymentid] = useState(0);
   const [paymentaddress, setpaymentaddress] = useState("");
   const [paymentamount, setpaymentamount] = useState(0);
+  const [discountCode, setDiscountCode] = useState('');
+  const [isDiscountPopupOpen, setIsDiscountPopupOpen] = useState(false);
 
 
   useEffect(() => {
@@ -83,6 +85,7 @@ const FlatContractForm = () => {
     },
     content: {
       width: '500px',
+      height: '250px', // Reduced height
       margin: 'auto',
       border: '1px solid #ccc',
       background: '#fff',
@@ -101,13 +104,14 @@ const FlatContractForm = () => {
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center', // Center-align the content horizontally
+      marginTop: '20px', // Add top margin
     },
     verifyButton: {
       backgroundColor: '#4CAF50', // Background color for the "Verify" button
       color: '#fff', // Text color for the "Verify" button
       border: 'none',
       padding: '10px 20px',
-      margin: '25px',
+      margin: '15px',
       borderRadius: '4px',
       cursor: 'pointer',
     },
@@ -116,7 +120,7 @@ const FlatContractForm = () => {
       color: '#fff', // Text color for the "Close Modal" button
       border: 'none',
       padding: '10px 20px',
-      margin: '5px',
+      margin: '15px',
       borderRadius: '4px',
       cursor: 'pointer',
     }
@@ -143,7 +147,7 @@ const FlatContractForm = () => {
 
 
     // fetch('http://127.0.0.1:8000/sendOtp2', {
-      fetch("https://139-59-5-56.nip.io:3443/sendOtp2", {
+    fetch("https://139-59-5-56.nip.io:3443/sendOtp2", {
       method: "POST",
       body: JSON.stringify({
         mail: email,
@@ -173,7 +177,7 @@ const FlatContractForm = () => {
     setLoading(true);
 
     // fetch('http://127.0.0.1:8000/verifyOtp2', {
-      fetch("https://139-59-5-56.nip.io:3443/getUser", {
+    fetch("https://139-59-5-56.nip.io:3443/getUser", {
       method: "POST",
       body: JSON.stringify({
         mail: mails
@@ -190,7 +194,7 @@ const FlatContractForm = () => {
       })
       .then((data) => {
         console.log(data);
-        if(data.length == 0) toast("User Detail Error");
+        if (data.length == 0) toast("User Detail Error");
         let userdata = data[0];
 
         let plandetail = "Free Plan";
@@ -226,7 +230,7 @@ const FlatContractForm = () => {
     setLoading(true);
 
     // fetch('http://127.0.0.1:8000/verifyOtp2', {
-      fetch("https://139-59-5-56.nip.io:3443/verifyOtp2", {
+    fetch("https://139-59-5-56.nip.io:3443/verifyOtp2", {
       method: "POST",
       body: JSON.stringify({
         mail: email,
@@ -244,7 +248,7 @@ const FlatContractForm = () => {
       })
       .then((data) => {
         console.log(data);
-        if(data.length == 0) toast("Wrong OTP");
+        if (data.length == 0) toast("Wrong OTP");
         let userdata = data[0];
 
         let plandetail = "Free Plan";
@@ -296,7 +300,7 @@ const FlatContractForm = () => {
     formData.append('version', version);
 
     // fetch('http://127.0.0.1:8000/audits', {
-      fetch("https://139-59-5-56.nip.io:3443/audits", {
+    fetch("https://139-59-5-56.nip.io:3443/audits", {
       method: "POST",
       body: formData,
     })
@@ -481,7 +485,7 @@ const FlatContractForm = () => {
     setLoading(true);
 
     // fetch('http://127.0.0.1:8000/getHistory', {
-      fetch("https://139-59-5-56.nip.io:3443/getHistory", {
+    fetch("https://139-59-5-56.nip.io:3443/getHistory", {
       method: "POST",
       body: JSON.stringify({
         mail: email,
@@ -512,7 +516,7 @@ const FlatContractForm = () => {
     setLoading(true);
 
     // fetch('http://127.0.0.1:8000/getReport', {
-      fetch("https://139-59-5-56.nip.io:3443/getReport", {
+    fetch("https://139-59-5-56.nip.io:3443/getReport", {
       method: "POST",
       body: JSON.stringify({
         id: id,
@@ -646,15 +650,23 @@ const FlatContractForm = () => {
   }
 
   const PurchasePlan = async (planid) => {
+    setplanid(planid);
+    setIsDiscountPopupOpen(true);
+  }
+
+
+  const PurchasePlanFinal = async () => {
 
     setLoading(true);
 
     let cost = 0;
     if (planid > 0) {
-      setplanid(planid);
+      // setplanid(planid);
 
-      const transactionid = "Tr-"+uuidv4().toString(36).slice(-6);
+      const transactionid = "Tr-" + uuidv4().toString(36).slice(-6);
       console.log("Txn_ID : ", transactionid);
+
+      return;
 
       const response2 = await fetch("https://139-59-5-56.nip.io:3443/payment-insert", {
         method: "POST",
@@ -667,14 +679,14 @@ const FlatContractForm = () => {
           "Content-type": "application/json"
         },
       });
-  
+
       const data = await response2.json();
       console.log("db entry data : ", data);
-  
+
       if (!data.status) {
         console.log("Failed DB payment Entry");
         return;
-      }else{
+      } else {
         window.location.replace(data.redirect)
       }
     }
@@ -852,158 +864,87 @@ const FlatContractForm = () => {
   }
 
   const generatePDF = async (reportData) => {
-    try{
-      
-    console.log(11);
-    const date = reportData.date;
-    // const logo = logo;
-    const pdf = new jsPDF('p', 'mm', 'a4');
-    const linePositionY = 25;
+    try {
 
-    pdf.setFontSize(10);
-    pdf.setFont("times", "bold");
-    pdf.setTextColor(100, 100, 100);
-    pdf.text(date, 180, 275);
-    pdf.text('SecureDapp', 10, 275);
-    pdf.setFont("times", "normal");
-    pdf.text('235, 2nd & 3rd Floor, 13th Cross Rd, Indira Nagar II Stage,', 10, 280, null, null, 'left');
-    pdf.text('Hoysala Nagar, Indiranagar, Bengaluru, Karnataka 560038', 10, 285, null, null, 'left');
-    pdf.text('hello@securedapp.in', 10, 290, null, null, 'left');
+      console.log(11);
+      const date = reportData.date;
+      // const logo = logo;
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      const linePositionY = 25;
 
-    pdf.setFontSize(18); // Change font size to 18
-    pdf.setFont("times", "bold"); // Set font to bold
-    pdf.text('SecureDApp Solidity Shield Audit Report', 48, 20); // Adjust the coordinates
+      pdf.setFontSize(10);
+      pdf.setFont("times", "bold");
+      pdf.setTextColor(100, 100, 100);
+      pdf.text(date, 180, 275);
+      pdf.text('SecureDapp', 10, 275);
+      pdf.setFont("times", "normal");
+      pdf.text('235, 2nd & 3rd Floor, 13th Cross Rd, Indira Nagar II Stage,', 10, 280, null, null, 'left');
+      pdf.text('Hoysala Nagar, Indiranagar, Bengaluru, Karnataka 560038', 10, 285, null, null, 'left');
+      pdf.text('hello@securedapp.in', 10, 290, null, null, 'left');
 
-    // Executive Summary
-    pdf.setFontSize(12);
-
-    const headers = [
-      ['AUDIT_HASH', reportData.id],
-      ['Contracts', reportData.contracts],
-      ['Lines', reportData.lines],
-      ['Assembly Lines', reportData.assembly_lines],
-      ['ERCs', reportData.ercs.join(', ')]
-    ];
-
-    pdf.autoTable({
-      startY: 45,
-      head: [['Executive Summary', '']], // Empty header row
-      body: headers,
-      styles: { fillColor: [211, 211, 211] },
-      headStyles: {
-        fillColor: [4, 170, 109],
-        cellPadding: 2, // Increase row height by setting cellPadding
-        fontSize: 12, // Adjust font size if needed
-      },
-      theme: 'grid', // Add grid lines if desired
-    });
-
-
-    // Add "Findings" data table
-    const findingsHeaders = [['Audit Findings', 'Count']];
-    const findingsData = Object.entries(reportData.findings).map(([key, value]) => {
-      let lowerKey = key.toLowerCase();
-
-      if (lowerKey === 'high_issues') {
-        lowerKey = 'CRITICAL';
-      } else if (lowerKey === 'medium_issues') {
-        lowerKey = 'MEDIUM';
-      } else if (lowerKey === 'low_issues') {
-        lowerKey = 'LOW';
-      } else if (lowerKey === 'informational_issues') {
-        lowerKey = 'INFORMATIONAL';
-      } else if (lowerKey === 'optimization_issues') {
-        lowerKey = 'OPTIMIZATIONS';
-      }
-
-      return [lowerKey, value];
-    }).reverse();
-
-    pdf.autoTable({
-      startY: pdf.lastAutoTable.finalY + 30,
-      head: findingsHeaders,
-      body: findingsData,
-      styles: { fillColor: [211, 211, 211] },
-      // headStyles: { fillColor: [4, 170, 109] },
-      headStyles: {
-        fillColor: [4, 170, 109],
-        cellPadding: 2, // Increase row height by setting cellPadding
-        fontSize: 12, // Adjust font size if needed
-      },
-    });
-
-    pdf.addImage(logo, 'JPEG', 10, 11, 10, 10);
-
-    pdf.text(date, 180, 15);
-    pdf.setDrawColor(0, 128, 0);
-    pdf.line(10, linePositionY, 200, linePositionY);
-    pdf.setDrawColor(0, 128, 0);
-    pdf.line(10, 270, 200, 270);
-    pdf.setFontSize(10);
-    pdf.setFont("times", "bold");
-    pdf.setTextColor(100, 100, 100);
-    pdf.text(date, 180, 275);
-    pdf.text('SecureDapp', 10, 275);
-    pdf.setFont("times", "normal");
-    pdf.text('235, 2nd & 3rd Floor, 13th Cross Rd, Indira Nagar II Stage,', 10, 280, null, null, 'left');
-    pdf.text('Hoysala Nagar, Indiranagar, Bengaluru, Karnataka 560038', 10, 285, null, null, 'left');
-    pdf.text('hello@securedapp.in', 10, 290, null, null, 'left');
-
-
-    // Vulnerabilities Found
-
-    if (reportData[1] != null) {
-
-      pdf.addPage();
-      pdf.setFontSize(18);
+      pdf.setFontSize(18); // Change font size to 18
       pdf.setFont("times", "bold"); // Set font to bold
-      pdf.text('Vulnerabilities Found', 78, 35);
+      pdf.text('SecureDApp Solidity Shield Audit Report', 48, 20); // Adjust the coordinates
 
-      let startY = 40;
-      [1, 2, 3, 4, 5].forEach((index) => {
-        if (reportData[index] && Object.keys(reportData[index]).length > 0) {
-          let headString = '';
-          switch (index) {
-            case 1:
-              headString = 'CRITICAL';
-              break;
-            case 2:
-              headString = 'MEDIUM';
-              break;
-            case 3:
-              headString = 'LOW';
-              break;
-            case 4:
-              headString = 'INFORMATIONAL';
-              break;
-            case 5:
-              headString = 'OPTIMIZATIONS';
-              break;
-          }
-          // const vulnerabilitiesData = Object.entries(reportData[index]).map(([type, locations]) => [type, locations.join(', ')]);
-          const vulnerabilitiesData = Object.entries(reportData[index]).map(([type, locations]) => {
-            // Remove "contracts/" prefix from each location string if present
-            const cleanedLocations = locations.map(location => location.replace(/^contracts\//, ''));
-            return [type, cleanedLocations.join(', ')];
-          });
+      // Executive Summary
+      pdf.setFontSize(12);
 
-          pdf.autoTable({
-            head: [[headString, 'Locations']],
-            body: vulnerabilitiesData,
-            startY: startY,
-            styles: { fillColor: [211, 211, 211] },
-            headStyles: { fillColor: [4, 170, 109] },
-          });
-          startY = pdf.previousAutoTable.finalY + 10;
+      const headers = [
+        ['AUDIT_HASH', reportData.id],
+        ['Contracts', reportData.contracts],
+        ['Lines', reportData.lines],
+        ['Assembly Lines', reportData.assembly_lines],
+        ['ERCs', reportData.ercs.join(', ')]
+      ];
+
+      pdf.autoTable({
+        startY: 45,
+        head: [['Executive Summary', '']], // Empty header row
+        body: headers,
+        styles: { fillColor: [211, 211, 211] },
+        headStyles: {
+          fillColor: [4, 170, 109],
+          cellPadding: 2, // Increase row height by setting cellPadding
+          fontSize: 12, // Adjust font size if needed
+        },
+        theme: 'grid', // Add grid lines if desired
+      });
+
+
+      // Add "Findings" data table
+      const findingsHeaders = [['Audit Findings', 'Count']];
+      const findingsData = Object.entries(reportData.findings).map(([key, value]) => {
+        let lowerKey = key.toLowerCase();
+
+        if (lowerKey === 'high_issues') {
+          lowerKey = 'CRITICAL';
+        } else if (lowerKey === 'medium_issues') {
+          lowerKey = 'MEDIUM';
+        } else if (lowerKey === 'low_issues') {
+          lowerKey = 'LOW';
+        } else if (lowerKey === 'informational_issues') {
+          lowerKey = 'INFORMATIONAL';
+        } else if (lowerKey === 'optimization_issues') {
+          lowerKey = 'OPTIMIZATIONS';
         }
+
+        return [lowerKey, value];
+      }).reverse();
+
+      pdf.autoTable({
+        startY: pdf.lastAutoTable.finalY + 30,
+        head: findingsHeaders,
+        body: findingsData,
+        styles: { fillColor: [211, 211, 211] },
+        // headStyles: { fillColor: [4, 170, 109] },
+        headStyles: {
+          fillColor: [4, 170, 109],
+          cellPadding: 2, // Increase row height by setting cellPadding
+          fontSize: 12, // Adjust font size if needed
+        },
       });
 
       pdf.addImage(logo, 'JPEG', 10, 11, 10, 10);
-      pdf.setFontSize(13);
-      pdf.setFont("times", "bold");
-      pdf.text("SecureDApp", 21, 19);
-      pdf.text(date, 180, 15);
-
 
       pdf.text(date, 180, 15);
       pdf.setDrawColor(0, 128, 0);
@@ -1020,79 +961,150 @@ const FlatContractForm = () => {
       pdf.text('Hoysala Nagar, Indiranagar, Bengaluru, Karnataka 560038', 10, 285, null, null, 'left');
       pdf.text('hello@securedapp.in', 10, 290, null, null, 'left');
 
+
+      // Vulnerabilities Found
+
+      if (reportData[1] != null) {
+
+        pdf.addPage();
+        pdf.setFontSize(18);
+        pdf.setFont("times", "bold"); // Set font to bold
+        pdf.text('Vulnerabilities Found', 78, 35);
+
+        let startY = 40;
+        [1, 2, 3, 4, 5].forEach((index) => {
+          if (reportData[index] && Object.keys(reportData[index]).length > 0) {
+            let headString = '';
+            switch (index) {
+              case 1:
+                headString = 'CRITICAL';
+                break;
+              case 2:
+                headString = 'MEDIUM';
+                break;
+              case 3:
+                headString = 'LOW';
+                break;
+              case 4:
+                headString = 'INFORMATIONAL';
+                break;
+              case 5:
+                headString = 'OPTIMIZATIONS';
+                break;
+            }
+            // const vulnerabilitiesData = Object.entries(reportData[index]).map(([type, locations]) => [type, locations.join(', ')]);
+            const vulnerabilitiesData = Object.entries(reportData[index]).map(([type, locations]) => {
+              // Remove "contracts/" prefix from each location string if present
+              const cleanedLocations = locations.map(location => location.replace(/^contracts\//, ''));
+              return [type, cleanedLocations.join(', ')];
+            });
+
+            pdf.autoTable({
+              head: [[headString, 'Locations']],
+              body: vulnerabilitiesData,
+              startY: startY,
+              styles: { fillColor: [211, 211, 211] },
+              headStyles: { fillColor: [4, 170, 109] },
+            });
+            startY = pdf.previousAutoTable.finalY + 10;
+          }
+        });
+
+        pdf.addImage(logo, 'JPEG', 10, 11, 10, 10);
+        pdf.setFontSize(13);
+        pdf.setFont("times", "bold");
+        pdf.text("SecureDApp", 21, 19);
+        pdf.text(date, 180, 15);
+
+
+        pdf.text(date, 180, 15);
+        pdf.setDrawColor(0, 128, 0);
+        pdf.line(10, linePositionY, 200, linePositionY);
+        pdf.setDrawColor(0, 128, 0);
+        pdf.line(10, 270, 200, 270);
+        pdf.setFontSize(10);
+        pdf.setFont("times", "bold");
+        pdf.setTextColor(100, 100, 100);
+        pdf.text(date, 180, 275);
+        pdf.text('SecureDapp', 10, 275);
+        pdf.setFont("times", "normal");
+        pdf.text('235, 2nd & 3rd Floor, 13th Cross Rd, Indira Nagar II Stage,', 10, 280, null, null, 'left');
+        pdf.text('Hoysala Nagar, Indiranagar, Bengaluru, Karnataka 560038', 10, 285, null, null, 'left');
+        pdf.text('hello@securedapp.in', 10, 290, null, null, 'left');
+
+      }
+
+      // Disclaimer and Contact Us
+      pdf.addPage();
+      // pdf.setFontSize(12);
+      // pdf.text('Disclaimer', 10, 35);
+
+      pdf.setFontSize(18);
+      pdf.setFont("times", "bold"); // Set font to bold
+      pdf.text('Disclaimer', 82, 35);
+
+
+      const disclaimerData = [
+        ['Purpose', 'This audit report is provided for informational purposes only'],
+        ['Scope', 'The audit was performed based on the state of the software at the time of the audit and may not reflect its current state or any subsequent changes.'],
+        ['Limitations', 'While every effort has been made to ensure the accuracy and completeness of this report, no guarantee is made that all vulnerabilities or issues have been identified. Security audits do not guarantee complete system security.'],
+        ['Recommendations', "The recommendations provided in this report are based on the best judgment of SecureDApp's security professionals. Implementation of these recommendations is at the discretion of the software's maintainers."],
+        ['Responsibility', "It remains the responsibility of the software's maintainers and users to ensure its security and proper functionality. SecureDApp does not accept any liability for any damage or loss caused due to overlooked vulnerabilities or misinterpretations in this report."],
+      ];
+      pdf.autoTable({
+        head: [['Topic', 'Description']],
+        body: disclaimerData,
+        startY: 40,
+        styles: { fillColor: [211, 211, 211] },
+        headStyles: { fillColor: [4, 170, 109] },
+      });
+
+      // pdf.setFontSize(12);
+      // pdf.text('Contact Us', 10, pdf.previousAutoTable.finalY + 20);
+
+      pdf.setFontSize(18);
+      pdf.setFont("times", "bold"); // Set font to bold
+      pdf.text('Contact Us', 82, pdf.previousAutoTable.finalY + 20);
+
+      const contactData = [
+        ['Email', 'hello@securedapp.in'],
+        ['Phone', '9606015868'],
+        ['Address', 'SecureDApp Solutions Pvt. Ltd. 235, 2nd & 3rd Floor,13th Cross Rd, Indira Nagar II Stage,Hoysala Nagar, Indiranagar, Bengaluru, Karnataka 560038'],
+        ['Website', 'securedapp.io'],
+        ['Business Hours', 'Monday to Friday, 9 AM - 6 PM IST'],
+      ];
+      pdf.autoTable({
+        head: [['', '']],
+        body: contactData,
+        startY: pdf.previousAutoTable.finalY + 25,
+        styles: { fillColor: [211, 211, 211] },
+        headStyles: { fillColor: [4, 170, 109] },
+      });
+
+      pdf.addImage(logo, 'JPEG', 10, 11, 10, 10);
+      pdf.setFontSize(13);
+      pdf.setFont("times", "bold");
+      pdf.text("SecureDApp", 21, 19);
+      pdf.text(date, 180, 15);
+      pdf.setDrawColor(0, 128, 0);
+      pdf.line(10, linePositionY, 200, linePositionY);
+      pdf.setFontSize(10);
+      pdf.line(10, 270, 200, 270);
+      pdf.setFontSize(10);
+      pdf.setFont("times", "bold");
+      pdf.setTextColor(100, 100, 100);
+      pdf.text(date, 180, 275);
+      pdf.text('SecureDapp', 10, 275);
+      pdf.setFont("times", "normal");
+      pdf.text('235, 2nd & 3rd Floor, 13th Cross Rd, Indira Nagar II Stage,', 10, 280, null, null, 'left');
+      pdf.text('Hoysala Nagar, Indiranagar, Bengaluru, Karnataka 560038', 10, 285, null, null, 'left');
+      pdf.text('hello@securedapp.in', 10, 290, null, null, 'left');
+
+      pdf.save('Securedapp_SolidityShield_Report.pdf');
+      console.log(24);
+    } catch (e) {
+      console.log("error: ", e);
     }
-
-    // Disclaimer and Contact Us
-    pdf.addPage();
-    // pdf.setFontSize(12);
-    // pdf.text('Disclaimer', 10, 35);
-
-    pdf.setFontSize(18);
-    pdf.setFont("times", "bold"); // Set font to bold
-    pdf.text('Disclaimer', 82, 35);
-
-
-    const disclaimerData = [
-      ['Purpose', 'This audit report is provided for informational purposes only'],
-      ['Scope', 'The audit was performed based on the state of the software at the time of the audit and may not reflect its current state or any subsequent changes.'],
-      ['Limitations', 'While every effort has been made to ensure the accuracy and completeness of this report, no guarantee is made that all vulnerabilities or issues have been identified. Security audits do not guarantee complete system security.'],
-      ['Recommendations', "The recommendations provided in this report are based on the best judgment of SecureDApp's security professionals. Implementation of these recommendations is at the discretion of the software's maintainers."],
-      ['Responsibility', "It remains the responsibility of the software's maintainers and users to ensure its security and proper functionality. SecureDApp does not accept any liability for any damage or loss caused due to overlooked vulnerabilities or misinterpretations in this report."],
-    ];
-    pdf.autoTable({
-      head: [['Topic', 'Description']],
-      body: disclaimerData,
-      startY: 40,
-      styles: { fillColor: [211, 211, 211] },
-      headStyles: { fillColor: [4, 170, 109] },
-    });
-
-    // pdf.setFontSize(12);
-    // pdf.text('Contact Us', 10, pdf.previousAutoTable.finalY + 20);
-
-    pdf.setFontSize(18);
-    pdf.setFont("times", "bold"); // Set font to bold
-    pdf.text('Contact Us', 82, pdf.previousAutoTable.finalY + 20);
-
-    const contactData = [
-      ['Email', 'hello@securedapp.in'],
-      ['Phone', '9606015868'],
-      ['Address', 'SecureDApp Solutions Pvt. Ltd. 235, 2nd & 3rd Floor,13th Cross Rd, Indira Nagar II Stage,Hoysala Nagar, Indiranagar, Bengaluru, Karnataka 560038'],
-      ['Website', 'securedapp.io'],
-      ['Business Hours', 'Monday to Friday, 9 AM - 6 PM IST'],
-    ];
-    pdf.autoTable({
-      head: [['', '']],
-      body: contactData,
-      startY: pdf.previousAutoTable.finalY + 25,
-      styles: { fillColor: [211, 211, 211] },
-      headStyles: { fillColor: [4, 170, 109] },
-    });
-
-    pdf.addImage(logo, 'JPEG', 10, 11, 10, 10);
-    pdf.setFontSize(13);
-    pdf.setFont("times", "bold");
-    pdf.text("SecureDApp", 21, 19);
-    pdf.text(date, 180, 15);
-    pdf.setDrawColor(0, 128, 0);
-    pdf.line(10, linePositionY, 200, linePositionY);
-    pdf.setFontSize(10);
-    pdf.line(10, 270, 200, 270);
-    pdf.setFontSize(10);
-    pdf.setFont("times", "bold");
-    pdf.setTextColor(100, 100, 100);
-    pdf.text(date, 180, 275);
-    pdf.text('SecureDapp', 10, 275);
-    pdf.setFont("times", "normal");
-    pdf.text('235, 2nd & 3rd Floor, 13th Cross Rd, Indira Nagar II Stage,', 10, 280, null, null, 'left');
-    pdf.text('Hoysala Nagar, Indiranagar, Bengaluru, Karnataka 560038', 10, 285, null, null, 'left');
-    pdf.text('hello@securedapp.in', 10, 290, null, null, 'left');
-
-    pdf.save('Securedapp_SolidityShield_Report.pdf');
-    console.log(24);
-  }catch(e){
-    console.log("error: ", e);
-  }
   };
 
   return (
@@ -1109,6 +1121,36 @@ const FlatContractForm = () => {
         style={{ ...blurryDivStyle }}
         className="lg:pt-[110px] pt-[110px] py-[60px]    "
       >
+
+        <Modal
+          isOpen={isDiscountPopupOpen}
+          onRequestClose={() => { setIsDiscountPopupOpen(false) }}
+          contentLabel="Payment Discount Code"
+          style={customStyles}
+        >
+          <div style={customStyles.header}>
+            <h2>Enter Discount Code</h2>
+          </div>
+
+          <div style={customStyles.paymentDetails}>
+            <input
+              type="text"
+              value={discountCode}
+              onChange={(e) => setDiscountCode(e.target.value)}
+              placeholder="Enter discount code"
+            />
+            <div>
+            <button style={customStyles.verifyButton} onClick={() => { PurchasePlanFinal(); }}>
+              Make Payment
+            </button>
+            {/* <button style={customStyles.closeButton} onClick={() => { setIsDiscountPopupOpen(false) }}>
+              Close
+            </button> */}
+            </div>
+          </div>
+
+        </Modal>
+
 
         {showsendotp && (
           <>
@@ -1213,7 +1255,7 @@ const FlatContractForm = () => {
                   <select
                     value={version}
                     onChange={(e) => { setVersion(e.target.value) }}
-                    className="md:w-11/12 w-full border rounded-[20px] p-3 text-white"  
+                    className="md:w-11/12 w-full border rounded-[20px] p-3 text-white"
                     style={{ backgroundColor: 'black' }}
                   >
                     {versionOptions.map((version) => (
