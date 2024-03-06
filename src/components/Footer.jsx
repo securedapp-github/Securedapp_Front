@@ -246,7 +246,7 @@ const Footer = () => {
               <FaTwitter className="w-[30px] h-[30px]" />
             </a>
             <a
-              href="https://www.instagram.com/securedapp_official/"
+              href="https://www.linkedin.com/company/securedapp/"
               target="_blank"
               className="text-gray-300 hover:text-blue-600 transition-colors duration-200"
             >
